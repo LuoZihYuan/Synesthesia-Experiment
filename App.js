@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
-  Button
+  TouchableHighlight,
+  ImageBackground
 } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert'
 
@@ -24,19 +24,18 @@ export default class App extends Component<{}> {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <DropdownAlert
-          ref={ref => this._userNotice.setDropDown(ref)}
-        />
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Button
-          onPress={() => this.connectRobo()}
-          title="Connect"
-          color="#841584"
-        />
-      </View>
+    <ImageBackground style={styles.container}
+      source={require('./assets/images/background.jpg')}>
+      <DropdownAlert
+        ref={ref => this._userNotice.setDropDown(ref)}
+      />
+      <TouchableHighlight
+        onPress={() => this.connectRobo()}
+        backgroundColor='transparent'
+      >
+        <Text>Connect</Text>
+      </TouchableHighlight>
+    </ImageBackground>
     );
   }
 
@@ -54,6 +53,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  },
+  transparent: {
+    backgroundColor: 'transparent',
   }
 });
