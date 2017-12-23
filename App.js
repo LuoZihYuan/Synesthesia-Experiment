@@ -8,18 +8,26 @@ import {
 } from 'react-native';
 import DropdownAlert from 'react-native-dropdownalert'
 
-import { RoboArm } from './SERoboArm'
-import { SEAlertCentre } from './SEAlertCentre';
+import { SERoboArm } from './SERoboArm'
+import { SEUserNotice } from './SEUserNotice';
 
 export default class App extends Component<{}> {
 
-  _alertCentre: SEAlertCentre
+  _userNotice: SEUserNotice
+  
+  _roboArm: SERoboArm
 
+  constructor() {
+    super();
+    this._roboArm = new SERoboArm();
+    this._userNotice = new SEUserNotice();
+  }
   render() {
     return (
       <View style={styles.container}>
         <DropdownAlert
-          ref={ref => this._alertCentre = new SEAlertCentre(ref)}/>
+          ref={ref => this._userNotice.setDropDown(ref)}
+        />
         <Text style={styles.welcome}>
           Welcome to React Native!
         </Text>
@@ -31,8 +39,13 @@ export default class App extends Component<{}> {
       </View>
     );
   }
+
+  componentDidMount() {
+    this.connectRobo();
+  }
+
   connectRobo() {
-    this._alertCentre.showAlert('info', 'info', 'first try ever');
+    this._roboArm.requestConnection();
   }
 }
 

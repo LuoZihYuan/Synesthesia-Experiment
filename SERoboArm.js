@@ -1,46 +1,91 @@
 'use strict'
 
-import { Alert } from 'react-native'
-import { BleManager } from 'react-native-ble-plx'
+import { Linking } from 'react-native'
+import { BleManager } from 'react-native-ble-plx' // https://www.polidea.com/blog/ReactNative_and_Bluetooth_to_An_Other_level/
 
-import { SEAlertCentre } from './SEAlertCentre';
+import { SEUserNotice } from './SEUserNotice';
 
 export class SERoboArm {
 
   _manager: BleManager
-  _alertCentre = SEAlertCentre.sharedCentre;
+  _userNotice: SEUserNotice
 
   constructor() {
     this._manager = new BleManager();
+    this._userNotice = new SEUserNotice();
+    this.searchCondition = {name: 'MacBook Pro (2)'}
   }
   
-  connect() {
-    const subscription = this.manager.onStateChange((state) => {
-      if (state === 'PoweredOn') {
-        this.scanAndConnect();
+  requestConnection() {
+    const subscription = this._manager.onStateChange((state) => {
+      if (state === 'Unsupported') {
+        this._userNotice.showNotice('error',
+                                    'BLE Unsupported',
+                                    'This device does not support Bluetooth Low Energy',
+                                    null, null);
+      } else if (state === 'Unauthorized') {
+        this._userNotice.showNotice('warn',
+                                    'Bluetooth Unauthorized',
+                                    'Require Bluetooth authorization to connect to our Robotic Arm',
+                                    null, null);
+      } else if (state === 'PoweredOff') {
+        var noticeEnd = data => {
+          console.log(data);
+          Linking.openURL('app-settings:root=General&path=Bluetooth');
+        }
+        this._userNotice.showNotice('warn',
+                                    'Bluetooth OFF',
+                                    'Turn ON Bluetooth to start connecting...',
+                                    noticeEnd, noticeEnd);
+      } else if (state === 'PoweredOn') {
+        this._connect();
         subscription.remove();
       }
     }, true);
   }
-  scanAndConnect() {
-    this.manager.startDeviceScan(null, null, (error, device) => {
+  _connect() {
+    this._manager.startDeviceScan(null, null, (error, device) => {
+      console.log(device)
+
       if (error) {
-        // Handle error (scanning will be stopped automatically)
+        console.error(error)
         return
       }
+      if (device.name === this.searchCondition.name) {
 
-      // Check if it is a device you are looking for based on advertisement data
-      // or other criteria.
-      this.setState({id: device.id, name: device.name})
-      // if (device.name === 'TI BLE Sensor Tag' || 
-      //     device.name === 'SensorTag') {
-          
-      //     // Stop scanning as it's not necessary if you are scanning for one device.
-      //     this.manager.stopDeviceScan();
-
-      //     // Proceed with connection.
-      // }
+        this._manager.stopDeviceScan();
+        device.connect()
+          .then((device) => {
+            return device.discoverAllServicesAndCharacteristics();
+          })
+          .then((device) => {
+            return this.setupNotifications(device)
+          })
+          .catch((error) => {
+            console.error(error)
+          });
+      }
     });
   }
 
+  async setupNotifications(device) {
+    for (const id in this.sensors) {
+
+      const characteristic = await device.writeCharacteristicWithResponseForService(
+        service, characteristicW, "AQ==" /* 0x01 in hex */
+      )
+
+      device.monitorCharacteristicForService(service, characteristicN, (error, characteristic) => {
+        if (error) {
+          console.error(error.message)
+          return
+        }
+        this.updateValue(characteristic.uuid, characteristic.value)
+      })
+    }
+  }
+
+  disConnect() {
+    
+  }
 }
