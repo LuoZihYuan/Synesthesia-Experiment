@@ -6,20 +6,17 @@ import {
   TouchableHighlight,
   ImageBackground
 } from 'react-native';
+
 import DropdownAlert from 'react-native-dropdownalert'
 
-import { SERoboArm } from './SERoboArm'
 import { SEUserNotice } from './SEUserNotice';
 
 export default class App extends Component<{}> {
 
   _userNotice: SEUserNotice
-  
-  _roboArm: SERoboArm
 
   constructor() {
     super();
-    this._roboArm = new SERoboArm();
     this._userNotice = new SEUserNotice();
   }
   render() {
@@ -44,7 +41,6 @@ export default class App extends Component<{}> {
   }
 
   connectRobo() {
-    this._roboArm.requestConnection();
   }
 }
 

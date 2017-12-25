@@ -1,6 +1,7 @@
 'use strict'
 
 import { Linking } from 'react-native'
+
 import { BleManager } from 'react-native-ble-plx' // https://www.polidea.com/blog/ReactNative_and_Bluetooth_to_An_Other_level/
 
 import { SEUserNotice } from './SEUserNotice';
