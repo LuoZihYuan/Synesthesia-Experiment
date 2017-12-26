@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import {
+  FlatList,
+  Image,
+  ImageBackground,
+  Platform,
   StyleSheet,
   Text,
-  View,
-  TouchableHighlight,
-  ImageBackground
+  TouchableWithoutFeedback,
+  View
 } from 'react-native';
 
 import DropdownAlert from 'react-native-dropdownalert'
@@ -19,20 +22,62 @@ export default class App extends Component<{}> {
     super();
     this._userNotice = new SEUserNotice();
   }
+
   render() {
+    let appNames = require('./assets/images/icons.json');
+    while(appNames.length > 6) {
+      appNames.pop()
+    }
+
     return (
     <ImageBackground style={styles.container}
-      source={require('./assets/images/background.jpg')}>
+      source={require('./assets/images/background.jpg')}
+    >
       <DropdownAlert
         ref={ref => this._userNotice.setDropDown(ref)}
       />
-      <TouchableHighlight
-        onPress={() => this.connectRobo()}
-        backgroundColor='transparent'
-      >
-        <Text>Connect</Text>
-      </TouchableHighlight>
+      
+      <FlatList
+        style={styles.tableContainer}
+        scrollEnabled={false}
+        data={appNames}
+        renderItem={this._renderRow}
+      />
+      
     </ImageBackground>
+    );
+  }
+
+  _renderRow = (row) => {
+    return (
+      <FlatList
+        style={styles.rowContainer}
+        horizontal={true}
+        scrollEnabled={false}
+        data={row.item.row}
+        renderItem={this._renderCol}
+      />
+    );
+  }
+
+  _renderCol = (col) => {
+    return (
+      <View
+        style={styles.colContainer}
+      >
+        {/* <ImageBackground style={styles.buttonImage}>
+        </ImageBackground> */}
+        <TouchableWithoutFeedback>
+          <Image style={styles.buttonMask}
+          />
+        </TouchableWithoutFeedback>
+        <Text style={styles.buttonTitle}
+          numberOfLines={1}
+          // ellipsizeMode='tail'
+        >
+          {col.item.col}
+        </Text>
+      </View>
     );
   }
 
@@ -50,7 +95,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  transparent: {
+  tableContainer: {
+    marginTop: 28
+  },
+  rowContainer: {
+    marginBottom: 8
+  },
+  colContainer: {
+    marginLeft: 13.5,
+    marginRight: 13.5
+  },
+  buttonImage: {
+    height: 60,
+    width: 60
+  },
+  buttonTitle: {
+    width: 60,
+    color: 'white',
+    fontSize: 12,
+    fontFamily: 'System',
+    fontWeight: '600',
+    textAlign: 'center',
     backgroundColor: 'transparent',
+    paddingTop: 5
+  },
+  buttonMask: {
+    height: 60,
+    width: 60,
+    borderRadius: 14,
+    opacity: 0.4,
+    backgroundColor: 'black'
   }
 });
