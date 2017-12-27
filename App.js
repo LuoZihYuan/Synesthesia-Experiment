@@ -6,6 +6,7 @@ import {
   Platform,
   StyleSheet,
   Text,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View
 } from 'react-native';
@@ -24,13 +25,14 @@ export default class App extends Component<{}> {
   }
 
   render() {
-    let appNames = require('./assets/images/icons.json');
-    while(appNames.length > 6) {
-      appNames.pop()
-    }
+    let appInfo = require('./assets/images/icons.json');
+    // while(appInfo.length > 24) {
+    //   appInfo.pop();
+    // }
 
     return (
-    <ImageBackground style={styles.container}
+    <ImageBackground
+      style={styles.container}
       source={require('./assets/images/background.jpg')}
     >
       <DropdownAlert
@@ -38,55 +40,48 @@ export default class App extends Component<{}> {
       />
       
       <FlatList
+        numColumns={4}
         style={styles.tableContainer}
         scrollEnabled={false}
-        data={appNames}
-        renderItem={this._renderRow}
+        data={appInfo}
+        renderItem={this._renderItem}
       />
       
     </ImageBackground>
     );
   }
-
-  _renderRow = (row) => {
+  _renderItem = (item) => {
     return (
-      <FlatList
-        style={styles.rowContainer}
-        horizontal={true}
-        scrollEnabled={false}
-        data={row.item.row}
-        renderItem={this._renderCol}
+    <View
+      style={styles.appContainer}
+    >
+      <Image style={styles.appImage}
+        source={{uri: item.item.key}}
       />
-    );
-  }
-
-  _renderCol = (col) => {
-    return (
-      <View
-        style={styles.colContainer}
+      <TouchableOpacity
+        onPress={function(){console.log(JSON.parse(this.children.props.children))}}
+        activeOpacity={0.35}
+        style={styles.appMask}
       >
-        {/* <ImageBackground style={styles.buttonImage}>
-        </ImageBackground> */}
-        <TouchableWithoutFeedback>
-          <Image style={styles.buttonMask}
-          />
-        </TouchableWithoutFeedback>
-        <Text style={styles.buttonTitle}
-          numberOfLines={1}
-          // ellipsizeMode='tail'
-        >
-          {col.item.col}
-        </Text>
-      </View>
+        <Text style={styles.appMask}>{JSON.stringify({index: item.index, key: item.item.key})}</Text>
+      </TouchableOpacity>
+      <Text
+        style={styles.appTitle}
+        numberOfLines={1}
+      >
+        {item.item.key}
+      </Text>
+    </View>
     );
   }
-
+  
   componentDidMount() {
-    this.connectRobo();
+    // this.connectRobo();
   }
 
   connectRobo() {
   }
+
 }
 
 const styles = StyleSheet.create({
@@ -98,18 +93,16 @@ const styles = StyleSheet.create({
   tableContainer: {
     marginTop: 28
   },
-  rowContainer: {
-    marginBottom: 8
-  },
-  colContainer: {
+  appContainer: {
+    marginBottom: 8,
     marginLeft: 13.5,
     marginRight: 13.5
   },
-  buttonImage: {
+  appImage: {
     height: 60,
     width: 60
   },
-  buttonTitle: {
+  appTitle: {
     width: 60,
     color: 'white',
     fontSize: 12,
@@ -119,11 +112,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     paddingTop: 5
   },
-  buttonMask: {
+  appMask: {
+    position: 'absolute',
     height: 60,
     width: 60,
     borderRadius: 14,
-    opacity: 0.4,
+    opacity: 0.0,
     backgroundColor: 'black'
   }
 });

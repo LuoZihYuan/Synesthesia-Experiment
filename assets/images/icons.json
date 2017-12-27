@@ -1,107 +1,91 @@
 [{
-  "row": [{
-      "col": "Location"
-    },
-    {
-      "col": "Bubbles 2"
-    },
-    {
-      "col": "Stream"
-    },
-    {
-      "col": "Eclipse"
-    }
-  ]
-}, {
-  "row": [{
-      "col": "Money"
-    },
-    {
-      "col": "Bubbles"
-    },
-    {
-      "col": "Sun"
-    },
-    {
-      "col": "Festive"
-    }
-  ]
-}, {
-  "row": [{
-      "col": "Payments"
-    },
-    {
-      "col": "Circles"
-    },
-    {
-      "col": "Ticks"
-    },
-    {
-      "col": "Flower"
-    }
-  ]
-}, {
-  "row": [{
-      "col": "Pieces"
-    },
-    {
-      "col": "Connected"
-    },
-    {
-      "col": "Waves"
-    },
-    {
-      "col": "Graph"
-    }
-  ]
-}, {
-  "row": [{
-      "col": "Player"
-    },
-    {
-      "col": "Crossed"
-    },
-    {
-      "col": "Weather"
-    },
-    {
-      "col": "Hex"
-    }
-  ]
-}, {
-  "row": [{
-      "col": "Ring"
-    },
-    {
-      "col": "Disc"
-    },
-    {
-      "col": "World"
-    },
-    {
-      "col": "Lights"
-    }
-  ]
-}, {
-  "row": [{
-      "col": "Spaghetti"
-    },
-    {
-      "col": "Docs"
-    },
-    {
-      "col": "Writer"
-    },
-    {
-      "col": "Links"
-    }
-  ]
-}, {
-  "row": [{
-      "col": "Star"
-    },
-    {
-      "col": "Dots"
-    }
-  ]
-}]
+    "key": "Bubbles 2"
+  },
+  {
+    "key": "Bubbles"
+  },
+  {
+    "key": "Circles"
+  },
+  {
+    "key": "Connected"
+  },
+  {
+    "key": "Crossed"
+  },
+  {
+    "key": "Disc"
+  },
+  {
+    "key": "Docs"
+  },
+  {
+    "key": "Dots"
+  },
+  {
+    "key": "Eclipse"
+  },
+  {
+    "key": "Festive"
+  },
+  {
+    "key": "Flower"
+  },
+  {
+    "key": "Graph"
+  },
+  {
+    "key": "Hex"
+  },
+  {
+    "key": "Lights"
+  },
+  {
+    "key": "Links"
+  },
+  {
+    "key": "Location"
+  },
+  {
+    "key": "Money"
+  },
+  {
+    "key": "Payments"
+  },
+  {
+    "key": "Pieces"
+  },
+  {
+    "key": "Player"
+  },
+  {
+    "key": "Ring"
+  },
+  {
+    "key": "Spaghetti"
+  },
+  {
+    "key": "Star"
+  },
+  {
+    "key": "Stream"
+  },
+  {
+    "key": "Sun"
+  },
+  {
+    "key": "Ticks"
+  },
+  {
+    "key": "Waves"
+  },
+  {
+    "key": "Weather"
+  },
+  {
+    "key": "World"
+  },
+  {
+    "key": "Writer"
+  }
+]
