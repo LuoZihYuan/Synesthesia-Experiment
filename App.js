@@ -21,32 +21,27 @@ export default class App extends Component<{}> {
   constructor() {
     super();
     this._userNotice = new SEUserNotice();
+    this.numberOfColumns = 4;
+    this.appInfo = require('./assets/images/icons.json');
   }
 
   render() {
-    let appInfo = require('./assets/images/icons.json');
-    // while(appInfo.length > 24) {
-    //   appInfo.pop();
-    // }
+    while(this.appInfo.length > 25) {
+      this.appInfo.pop();
+    }
 
     return (
-    <ImageBackground
-      style={styles.container}
-      source={require('./assets/images/background.jpg')}
-    >
-      <DropdownAlert
-        ref={ref => this._userNotice.setDropDown(ref)}
-      />
-      
-      <FlatList
-        numColumns={4}
-        style={styles.tableContainer}
-        scrollEnabled={false}
-        data={appInfo}
-        renderItem={this._renderItem}
-      />
-      
-    </ImageBackground>
+      <ImageBackground
+        style={styles.container}
+        source={require('./assets/images/background.jpg')}>
+        <DropdownAlert ref={ref => this._userNotice.setDropDown(ref)}/>
+        <FlatList
+          numColumns={this.numberOfColumns}
+          style={styles.tableContainer}
+          scrollEnabled={false}
+          data={this.appInfo}
+          renderItem={this._renderItem}/>
+      </ImageBackground>
     );
   }
   _renderItem = (item) => {
@@ -54,30 +49,44 @@ export default class App extends Component<{}> {
       ios: item.item.key,
       android: item.item.key.toLowerCase().replace(' ', '_')
     })
+    let _onAppPress = this._onAppPress;
+
     return (
-    <View
-      style={styles.appContainer}
-    >
-      <Image style={styles.appImage}
-        source={{uri: imageSource}}
-      />
-      <TouchableOpacity
-        onPress={function(){console.log(JSON.parse(this.children.props.children))}}
-        activeOpacity={0.35}
-        style={styles.appMask}
-      >
-        <Text style={styles.appMask}>{JSON.stringify({index: item.index, key: item.item.key})}</Text>
-      </TouchableOpacity>
-      <Text
-        style={styles.appTitle}
-        numberOfLines={1}
-      >
-        {item.item.key}
-      </Text>
-    </View>
+      <View style={styles.appContainer}>
+        <Image
+          style={styles.appImage}
+          source={{uri: imageSource}}/>
+        <TouchableOpacity
+          ref={item.index}
+          onPress={function(){_onAppPress(this)}}
+          activeOpacity={0.35}
+          style={styles.appMask}>
+          <Text style={styles.appMetaData}>{JSON.stringify({index: item.index, key: item.item.key})}</Text>
+        </TouchableOpacity>
+        <Text
+          style={styles.appTitle}
+          numberOfLines={1}>
+          {item.item.key}
+        </Text>
+      </View>
     );
   }
-  
+
+  _onAppPress = (ref) => {
+    let pressedApp = JSON.parse(ref.children.props.children);
+    let requestBody = JSON.stringify({
+      size: [
+        Math.ceil(this.appInfo.length / this.numberOfColumns),
+        this.numberOfColumns
+      ],
+      pressed: [ 
+        Math.floor(pressedApp.index / this.numberOfColumns),
+        pressedApp.index % this.numberOfColumns
+      ]
+    });
+    console.log(requestBody)
+  }
+
   componentDidMount() {
     // this.connectRobo();
   }
@@ -122,5 +131,9 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     opacity: 0.0,
     backgroundColor: 'black'
+  },
+  appMetaData: {
+    height: 0,
+    width: 0
   }
 });
