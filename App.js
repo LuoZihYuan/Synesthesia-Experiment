@@ -26,7 +26,7 @@ export default class App extends Component<{}> {
   }
 
   render() {
-    while(this.appInfo.length > 25) {
+    while(this.appInfo.length > 17) {
       this.appInfo.pop();
     }
 
@@ -77,7 +77,7 @@ export default class App extends Component<{}> {
     let requestBody = JSON.stringify({
       size: [
         Math.ceil(this.appInfo.length / this.numberOfColumns),
-        this.numberOfColumns
+        Math.min(this.appInfo.length, this.numberOfColumns)
       ],
       pressed: [ 
         Math.floor(pressedApp.index / this.numberOfColumns),
