@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  TouchableWithoutFeedback,
   View
 } from 'react-native';
 
@@ -51,12 +50,16 @@ export default class App extends Component<{}> {
     );
   }
   _renderItem = (item) => {
+    let imageSource = Platform.select({
+      ios: item.item.key,
+      android: item.item.key.toLowerCase().replace(' ', '_')
+    })
     return (
     <View
       style={styles.appContainer}
     >
       <Image style={styles.appImage}
-        source={{uri: item.item.key}}
+        source={{uri: imageSource}}
       />
       <TouchableOpacity
         onPress={function(){console.log(JSON.parse(this.children.props.children))}}
