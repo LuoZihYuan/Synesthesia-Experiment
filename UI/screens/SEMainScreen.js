@@ -106,7 +106,7 @@ export default class SEMainScreen extends Component<{}> {
     });
     console.log(requestBody);
 
-    fetch('https://172.20.10.1', {
+    fetch('http://192.168.1.103.xip.io:8000/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
