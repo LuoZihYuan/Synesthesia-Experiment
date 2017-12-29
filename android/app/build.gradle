@@ -75,8 +75,12 @@ import com.android.build.OutputFile
 project.ext.react = [
     entryFile: "index.js"
 ]
+project.ext.vectoricons = [
+    iconFontNames: [ 'Entypo.ttf', 'EvilIcons.ttf', 'Feather.ttf', 'FontAwesome.ttf', 'Foundation.ttf', 'Ionicons.ttf', 'MaterialCommunityIcons.ttf', 'MaterialIcons.ttf', 'Octicons.ttf', 'SimpleLineIcons.ttf', 'Zocial.ttf' ]
+]
 
 apply from: "../../node_modules/react-native/react.gradle"
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 /**
  * Set this to true to create two separate APKs instead of one:
@@ -142,6 +146,7 @@ dependencies {
     compile project(':react-native-blur')
     compile project(':react-native-device-info')
     compile project(':react-native-ble-plx')
+    compile project(':react-native-vector-icons')
     compile fileTree(dir: "libs", include: ["*.jar"])
     compile "com.android.support:appcompat-v7:23.0.1"
     compile "com.facebook.react:react-native:+"  // From node_modules
