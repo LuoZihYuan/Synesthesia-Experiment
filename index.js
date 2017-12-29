@@ -1,4 +1,6 @@
+// Standard React Library
 import { AppRegistry } from 'react-native';
-import App from './App';
+// Dependent Module
+import App from './UI/App';
 
 AppRegistry.registerComponent('SynesthesiaExperiment', () => App);

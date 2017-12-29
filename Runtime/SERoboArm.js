@@ -1,9 +1,10 @@
 'use strict'
 
+// Standard React Library
 import { Linking } from 'react-native'
-
+// Third Party Library
 import { BleManager } from 'react-native-ble-plx' // https://www.polidea.com/blog/ReactNative_and_Bluetooth_to_An_Other_level/
-
+// Dependent Module
 import { SEUserNotice } from './SEUserNotice';
 
 export class SERoboArm {

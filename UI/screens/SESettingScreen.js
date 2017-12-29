@@ -1,10 +1,11 @@
+// Standard React Library
 import React, { Component } from 'react';
 import {
   StyleSheet,
   Text,
   View
 } from 'react-native';
-
+// Third Party Library
 import SettingsList from 'react-native-settings-list'
 
 export default class SESettingScreen extends Component<{}> {

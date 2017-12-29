@@ -1,7 +1,8 @@
+// Third Party Library
 import { StackNavigator } from 'react-navigation'
-
-import SEMainScreen from './SEMainScreen'
-import SESettingScreen from './SESettingScreen'
+// Dependent Module
+import SEMainScreen from './screens/SEMainScreen'
+import SESettingScreen from './screens/SESettingScreen'
 
 const App = StackNavigator({
   Main: {

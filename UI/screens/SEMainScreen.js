@@ -15,7 +15,7 @@ import {
 import DropdownAlert from 'react-native-dropdownalert'
 import { BlurView } from 'react-native-blur'
 // Dependent Module
-import { SEUserNotice } from './SEUserNotice';
+import { SEUserNotice } from '../../Runtime/SEUserNotice';
 
 export default class SEMainScreen extends Component<{}> {
   static navigationOptions = {
