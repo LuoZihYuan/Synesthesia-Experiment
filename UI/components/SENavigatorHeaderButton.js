@@ -24,9 +24,11 @@ export default class SENavigatorHeaderButton extends Component {
       <View style={styles.container}>
         <Icon.Button
           name={this.props.icon}
-          size={26}
+          size={35}
           color="#4F8EF7"
-          backgroundColor="#FFF"
+          activeOpacity={0.0}
+          backgroundColor="transparent"
+          underlayColor="transparent"
           onPress={this.props.onPress}
         />
       </View>
@@ -39,7 +41,9 @@ const styles = StyleSheet.create({
   container: {
     // position absolutely in the top left corner
     ...StyleSheet.absoluteFillObject,
-    top: 20,
-    left: 5,
-  },
+    top: 16.5,
+    left: 2,
+    width: 46.5,
+    backgroundColor: 'transparent'
+  }
 });

@@ -28,7 +28,7 @@ export default class SEMainScreen extends Component<{}> {
     super();
     this._userNotice = new SEUserNotice();
     this.numberOfColumns = 4;
-    this.appInfo = require('./assets/images/icons.json');
+    this.appInfo = require('../../assets/images/icons.json');
   }
 
   render() {
@@ -39,7 +39,7 @@ export default class SEMainScreen extends Component<{}> {
     return (
       <ImageBackground
         style={styles.container}
-        source={require('./assets/images/background.jpg')}>
+        source={require('../../assets/images/background.jpg')}>
         <DropdownAlert ref={ref => this._userNotice.setDropDown(ref)}/>
         <FlatList
           numColumns={this.numberOfColumns}

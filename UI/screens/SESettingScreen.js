@@ -1,16 +1,19 @@
 // Standard React Library
 import React, { Component } from 'react';
 import {
+  Alert,
   StyleSheet,
   Text,
   View
 } from 'react-native';
 // Third Party Library
 import SettingsList from 'react-native-settings-list'
+// Dependent Module
+import SENavigatorHeaderButton from '../components/SENavigatorHeaderButton'
 
 export default class SESettingScreen extends Component<{}> {
   static navigationOptions = {
-    title: 'Settings'
+    header: null
   }
 
   constructor(){
@@ -19,12 +22,21 @@ export default class SESettingScreen extends Component<{}> {
     this.state = {switchValue: false};
   }
   render() {
-    console.log('hihi')
     var bgColor = '#DCE3F4';
     return (
       <View style={{backgroundColor:'#EFEFF4',flex:1}}>
+        <View style={{borderBottomWidth:1, backgroundColor:'#f7f7f8',borderColor:'#c8c7cc', height:117}}>
+          <View style={{flex: 1}}></View>
+          <Text style={{alignSelf:'center',paddingBottom:6,fontWeight:'bold',fontSize:35}}>Settings</Text>
+        </View>
+        <SENavigatorHeaderButton
+          style={{position: 'absolute'}}
+          icon="md-close"
+          onPress={() => this.props.navigation.goBack()}
+        />
         <View style={{backgroundColor:'#EFEFF4',flex:1}}>
           <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
+            <SettingsList.Header headerStyle={{marginTop:15}}/>
             <SettingsList.Item
               hasSwitch={true}
               switchState={this.state.switchValue}
@@ -39,7 +51,7 @@ export default class SESettingScreen extends Component<{}> {
               onPress={() => Alert.alert('Route to Wifi Page')}
             />
             <SettingsList.Item
-              title='Blutooth'
+              title='Bluetooth'
               titleInfo='Off'
               titleInfoStyle={styles.titleInfoStyle}
               onPress={() => Alert.alert('Route to Blutooth Page')}
