@@ -91,7 +91,13 @@ export default class SESettingScreen extends Component<{}> {
               isEditable={true}
               hasNavArrow={false}
               value={this.state.postAddress}
-              onTextChange={(text) => this.setState({postAddress: text})}
+              onTextChange={(text) => {
+                if (text) {
+                  this.setState({postAddress: text});
+                } else {
+                  this.setState({postAddress: 'http://127.0.0.1:8000/'});
+                }
+              }}
             />
             <SettingsList.Item
               icon={<Image style={styles.imageStyle} source={require('../../assets/images/bluetooth.png')}/>}
