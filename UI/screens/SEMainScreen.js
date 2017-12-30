@@ -1,6 +1,7 @@
 // Standard React Library
 import React, { Component } from 'react';
 import {
+  Alert,
   FlatList,
   Image,
   ImageBackground,
@@ -28,12 +29,19 @@ export default class SEMainScreen extends Component<{}> {
     super();
     this._userNotice = new SEUserNotice();
     this.numberOfColumns = 4;
-    this.appInfo = require('../../assets/images/icons.json');
+    this._totalApps = require('../../assets/icons.json');
+    this.state = {
+      appInfo: this._totalApps.slice(),
+      appCount: 16,
+      randomOrder: false,
+      mode: 'Location',
+      postAddress: 'http://127.0.0.1:8000/'
+    };
   }
 
   render() {
-    while(this.appInfo.length > 16) {
-      this.appInfo.pop();
+    while(this.state.appInfo.length > this.state.appCount) {
+      this.state.appInfo.pop();
     }
 
     return (
@@ -42,10 +50,11 @@ export default class SEMainScreen extends Component<{}> {
         source={require('../../assets/images/background.jpg')}>
         <DropdownAlert ref={ref => this._userNotice.setDropDown(ref)}/>
         <FlatList
+          extraData={this.state}
           numColumns={this.numberOfColumns}
           style={styles.tableContainer}
           scrollEnabled={false}
-          data={this.appInfo}
+          data={this.state.appInfo}
           renderItem={this._renderItem}/>
         <View style={styles.footerContainer}>
           <BlurView
@@ -57,7 +66,18 @@ export default class SEMainScreen extends Component<{}> {
               style={styles.footerImage}
               source={{uri: 'Settings'}}/>
             <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Settings')}
+              onPress={() => {
+                this.props.navigation.navigate('Settings', {
+                  currentAppCount: this.state.appCount,
+                  changeAppCount: this.handleAppCountChangeRequest,
+                  randomOrder: this.state.randomOrder,
+                  sortApp: this.handleSortingRequest,
+                  currentMode: this.state.mode,
+                  changeMode: this.handleModeChangeRequest,
+                  currentAddress: this.state.postAddress,
+                  changeAddress: this.handleAddressChangeRequest
+                })
+              }}
               activeOpacity={0.35}
               style={styles.appMask}>
             </TouchableOpacity>
@@ -95,37 +115,64 @@ export default class SEMainScreen extends Component<{}> {
   _onAppPress = (ref) => {
     let pressedApp = JSON.parse(ref.children.props.children);
     let requestBody = JSON.stringify({
-      size: [
-        Math.ceil(this.appInfo.length / this.numberOfColumns),
-        Math.min(this.appInfo.length, this.numberOfColumns)
+      mode: this.state.mode,
+      grid: [
+        Math.ceil(this.state.appInfo.length / this.numberOfColumns),
+        Math.min(this.state.appInfo.length, this.numberOfColumns)
       ],
-      pressed: [ 
-        Math.floor(pressedApp.index / this.numberOfColumns),
-        pressedApp.index % this.numberOfColumns
-      ]
+      pressed: {
+        name: pressedApp.key,
+        loc: [
+          Math.floor(pressedApp.index / this.numberOfColumns),
+          pressedApp.index % this.numberOfColumns
+        ]
+      }
     });
     console.log(requestBody);
 
-    fetch('http://192.168.1.103.xip.io:8000/', {
+    fetch(this.state.postAddress, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: requestBody
-    })
-      .catch((erorr)=>{
-        console.error(error);
+    }).catch((error) => Alert.alert(error.message));
+  }
+
+  handleAppCountChangeRequest = (amount) => {
+    this.setState({
+      appInfo: this._totalApps.slice(),
+      appCount: Math.min(amount, 24),
+      randomOrder: false
+    });
+  }
+  handleSortingRequest = (random) => {
+    if (random) {
+      do {
+        this.state.appInfo.sort(function(a, b){
+          return 0.5 - Math.random()
+        });
+      } while(Math.random() > 0.2);
+    } else {
+      this.state.appInfo.sort(function(a, b){
+        if (a.key > b.key) return 1;
+        if (a.key < b.key) return -1;
+        return 0;
       });
+    }
+    this.setState({
+      randomOrder: random
+    });
   }
-
-  componentDidMount() {
-    // this.connectRobo();
+  handleModeChangeRequest = (newMode) => {
+    this.setState({mode: newMode});
   }
-
-  connectRobo() {
+  handleAddressChangeRequest = (newAddress) => {
+    this.setState({
+      postAddress: newAddress
+    });
   }
-
 }
 
 const styles = StyleSheet.create({

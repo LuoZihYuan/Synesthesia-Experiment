@@ -1,7 +1,7 @@
 // Standard React Library
 import React, { Component } from 'react';
 import {
-  Alert,
+  Image,
   StyleSheet,
   Text,
   View
@@ -18,7 +18,6 @@ export default class SESettingScreen extends Component<{}> {
 
   constructor(){
     super();
-    this.onValueChange = this.onValueChange.bind(this);
     this.state = {switchValue: false};
   }
   render() {
@@ -32,73 +31,95 @@ export default class SESettingScreen extends Component<{}> {
         <SENavigatorHeaderButton
           style={{position: 'absolute'}}
           icon="md-close"
-          onPress={() => this.props.navigation.goBack()}
+          onPress={() => {
+            this.props.navigation.state.params.changeMode(this.state.mode);
+            this.props.navigation.state.params.changeAddress(this.state.postAddress);
+            this.props.navigation.goBack();
+          }}
         />
+
         <View style={{backgroundColor:'#EFEFF4',flex:1}}>
           <SettingsList borderColor='#c8c7cc' defaultItemSize={50}>
             <SettingsList.Header headerStyle={{marginTop:15}}/>
             <SettingsList.Item
-              hasSwitch={true}
-              switchState={this.state.switchValue}
-              switchOnValueChange={this.onValueChange}
-              hasNavArrow={false}
-              title='Airplane Mode'
-            />
-            <SettingsList.Item
-              title='Wi-Fi'
-              titleInfo='Bill Wi The Science Fi'
+              icon={<Image style={styles.imageStyle} source={require('../../assets/images/control.png')}/>}
+              title='Mode'
+              titleInfo={this.state.mode}
               titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => Alert.alert('Route to Wifi Page')}
+              onPress={() => {
+                if (this.state.mode === 'Location') {
+                  this.setState({mode: 'Graph'});
+                } else {
+                  this.setState({mode: 'Location'});
+                }
+              }}
             />
             <SettingsList.Item
+              icon={<Image style={styles.imageStyle} source={require('../../assets/images/general.png')}/>}
+              hasSwitch={true}
+              switchState={this.state.random}
+              switchOnValueChange={(random) => {
+                this.setState({random: random});
+                this.props.navigation.state.params.sortApp(random);
+              }}
+              hasNavArrow={false}
+              title='Random'
+            />
+            <SettingsList.Item
+              icon={<Image style={styles.imageStyle} source={require('../../assets/images/display.png')}/>}
+              title='Display'
+              titleInfo={this.state.appCount.toString()}
+              titleInfoStyle={styles.titleInfoStyle}
+              onPress={() => {
+                let newValue = this.state.appCount + 1;
+                if (newValue > 24) {
+                  newValue -= 24;
+                }
+                this.props.navigation.state.params.changeAppCount(newValue);
+                this.setState({
+                  random: false,
+                  appCount: newValue
+                })
+              }}
+            />
+            <SettingsList.Header headerStyle={{marginTop:15}}/>
+            <SettingsList.Item
+              icon={<Image style={styles.imageStyle} source={require('../../assets/images/wifi.png')}/>}
+              id="Address"
+              title='Address'
+              titleInfoStyle={styles.titleInfoStyle}
+              isEditable={true}
+              hasNavArrow={false}
+              value={this.state.postAddress}
+              onTextChange={(text) => this.setState({postAddress: text})}
+            />
+            <SettingsList.Item
+              icon={<Image style={styles.imageStyle} source={require('../../assets/images/bluetooth.png')}/>}
               title='Bluetooth'
               titleInfo='Off'
               titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => Alert.alert('Route to Blutooth Page')}
-            />
-            <SettingsList.Item
-              title='Cellular'
-              onPress={() => Alert.alert('Route To Cellular Page')}
-            />
-            <SettingsList.Item
-              title='Personal Hotspot'
-              titleInfo='Off'
-              titleInfoStyle={styles.titleInfoStyle}
-              onPress={() => Alert.alert('Route To Hotspot Page')}
-            />
-            <SettingsList.Header headerStyle={{marginTop:15}}/>
-            <SettingsList.Item
-              title='Notifications'
-              onPress={() => Alert.alert('Route To Notifications Page')}
-            />
-            <SettingsList.Item
-              title='Control Center'
-              onPress={() => Alert.alert('Route To Control Center Page')}
-            />
-            <SettingsList.Item
-              title='Do Not Disturb'
-              onPress={() => Alert.alert('Route To Do Not Disturb Page')}
-            />
-            <SettingsList.Header headerStyle={{marginTop:15}}/>
-            <SettingsList.Item
-              title='General'
-              onPress={() => Alert.alert('Route To General Page')}
-            />
-            <SettingsList.Item
-              title='Display & Brightness'
-              onPress={() => Alert.alert('Route To Display Page')}
             />
           </SettingsList>
         </View>
       </View>
     );
   }
-  onValueChange(value){
-    this.setState({switchValue: value});
+
+  componentWillMount() {
+    this.state.appCount = this.props.navigation.state.params.currentAppCount;
+    this.state.random = this.props.navigation.state.params.randomOrder;
+    this.state.mode = this.props.navigation.state.params.currentMode;
+    this.state.postAddress = this.props.navigation.state.params.currentAddress;
   }
 }
 
 const styles = StyleSheet.create({
+  imageStyle:{
+    marginLeft:15,
+    alignSelf:'center',
+    height:30,
+    width:30
+  },
   titleInfoStyle:{
     fontSize:16,
     color: '#8e8e93'

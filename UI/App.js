@@ -12,8 +12,10 @@ const App = StackNavigator({
     screen: SESettingScreen
   }
 }, {
-  // headerMode: 'none',
-  mode: 'modal'
+  mode: 'modal',
+  navigationOptions: {
+    gesturesEnabled: false
+  }
 });
 
 export default App;
